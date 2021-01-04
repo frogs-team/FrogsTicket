@@ -1,0 +1,27 @@
+plugins {
+    id 'java'
+}
+
+group 'ua.frogsteam.ticket'
+version '1.0'
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+    jcenter()
+}
+
+dependencies {
+    compile ('net.dv8tion:JDA:4.2.0_225') {
+        exclude module: 'opus-java'
+    }
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
+    compile 'net.dv8tion:JDA:4.2.0_225'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+    compile 'com.jagrosh:jda-utilities:JDA-UTILITIES-3.0.5'
+    compile 'net.dv8tion:JDA:JDA-3.0.5'
+}
+
+test {
+    useJUnitPlatform()
+}
