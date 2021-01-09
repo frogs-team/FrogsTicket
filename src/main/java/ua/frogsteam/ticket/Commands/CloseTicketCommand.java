@@ -9,7 +9,9 @@ import java.util.concurrent.TimeUnit;
 
 import static ua.frogsteam.ticket.Utilities.getDefaultEmbed;
 
-@CommandInfo(name = "close", description = "Deletes the ticket channel in which the command was executed.")
+@CommandInfo(name = "close", description = "Deletes the ticket channel " +
+        "in which the command was executed.")
+
 public class CloseTicketCommand extends Command {
 
     private int closeCooldown = Config.TICKET_CLOSE_COOLDOWN;
@@ -24,7 +26,9 @@ public class CloseTicketCommand extends Command {
         if (!event.getTextChannel().getName().contains("ticket-"))
             return;
 
-        event.reply(getDefaultEmbed("Ticket => Close", "Closing this ticket in " + closeCooldown + " second(s).").build());
+        event.reply(getDefaultEmbed("Ticket => Close", "Closing this ticket in " + closeCooldown
+                + " second(s).").build());
+
         event.getTextChannel().delete().queueAfter(closeCooldown, TimeUnit.SECONDS);
     }
 }

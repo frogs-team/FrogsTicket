@@ -42,7 +42,6 @@ public class Utilities {
             builder.append(TICKET_SUFFIX_CHARS.charAt((int)(Math.random() * TICKET_SUFFIX_CHARS.length())));
             length--;
         }
-
         return builder.toString().trim().isEmpty() ? null : builder.toString();
     }
 }

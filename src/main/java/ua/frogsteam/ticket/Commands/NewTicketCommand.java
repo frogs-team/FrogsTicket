@@ -1,4 +1,4 @@
-package ua.frogsteam.ticke.Commands;
+package ua.frogsteam.ticket.Commands;
 
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
@@ -9,7 +9,9 @@ import ua.frogsteam.ticket.*;
 
 import static ua.frogsteam.ticket.Utilities.getDefaultEmbed;
 
-@CommandInfo(name = "new", description =  "Creates a new text channel in the category specified, with an appropriate name.")
+@CommandInfo(name = "new", description =  "Creates a new text channel " +
+        "in the category specified, with an appropriate name.")
+
 public class NewTicketCommand extends Command {
 
     private String ticketCategory = Config.TICKET_CATEGORY_NAME;
@@ -42,20 +44,32 @@ public class NewTicketCommand extends Command {
             ticketName += "-" + suffix;
         }
 
-        TextChannel ticket = event.getGuild().createTextChannel(ticketName, event.getGuild().getCategoriesByName(ticketCategory, true).get(0)).complete();
-		ChannelManager ticketManager = ticket.getManager().putPermissionOverride(event.getMember(), 3072L, 8192L)
-                .putPermissionOverride(event.getGuild().getRolesByName("@everyone", true).get(0), 0L, 1024L);
+        TextChannel ticket = event.getGuild().createTextChannel(ticketName,
+                event.getGuild().getCategoriesByName(ticketCategory, true).get(0)).complete();
+
+		ChannelManager ticketManager = ticket.getManager()
+                .putPermissionOverride(event.getMember(), 3072L, 8192L)
+                .putPermissionOverride(event.getGuild()
+                .getRolesByName("@everyone", true).get(0), 0L, 1024L);
+
         for (String supportRole : supportRoles) {
             if (!event.getGuild().getRolesByName(supportRole, true).isEmpty()) {
-                ticketManager = ticketManager.putPermissionOverride(event.getGuild().getRolesByName(supportRole, true).get(0), 3072L, 8192L);
+                ticketManager = ticketManager.putPermissionOverride(event.getGuild()
+                        .getRolesByName(supportRole, true).get(0), 3072L, 8192L);
             }
         }
+
         ticketManager.queue();
+
         event.reply(getDefaultEmbed("Ticket => Created",
-                "The ticket <#" + ticket.getId() + "> was created." + (withReason ? "\n\n**Reason**: " + event.getArgs() : ""))
+                "The ticket <#" + ticket.getId() + "> was " +
+                        "created." + (withReason ? "\n\n**Reason**: " + event.getArgs() : ""))
                         .build());
-        ticket.sendMessage(getDefaultEmbed("Ticket => Created",
-                "Please wait! Our staff will be there to assist you shortly.\n\n**Created By:** " + event.getAuthor().getAsMention() + (withReason ? "\n**Reason:** " + event.getArgs() : ""))
+
+        ticket.sendMessage(getDefaultEmbed("Ticket => Created", "Please wait! Our staff will " +
+                        "be there to assist you shortly.\n\n**Created " +
+                        "By:** " + event.getAuthor().getAsMention() + (withReason ? "\n**Reason:** " +
+                        "" + event.getArgs() : ""))
                 .build()).queue();
     }
 }
