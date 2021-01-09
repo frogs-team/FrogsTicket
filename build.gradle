@@ -1,9 +1,11 @@
 plugins {
     id 'java'
+    id 'application'
 }
 
 group 'ua.frogsteam.ticket'
 version '1.0'
+mainClassName = 'ua.frogsteam.ticket.Main'
 
 repositories {
     mavenCentral()
@@ -11,17 +13,27 @@ repositories {
     jcenter()
 }
 
+archivesBaseName = "FrogsTicket"
+
 dependencies {
-    compile ('net.dv8tion:JDA:4.2.0_225') {
-        exclude module: 'opus-java'
-    }
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
     compile 'net.dv8tion:JDA:4.2.0_225'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
-    compile 'com.jagrosh:jda-utilities:JDA-UTILITIES-3.0.5'
-    compile 'net.dv8tion:JDA:JDA-3.0.5'
+    compile 'com.jagrosh:jda-utilities:3.0.5'
+    compile 'net.dv8tion:JDA:3.0.5'
+    compile 'com.jagrosh:jda-utilities-command:3.0.5'
 }
 
-test {
-    useJUnitPlatform()
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Main-Class': mainClassName
+    }
+    from {
+        configurations
+                .compile
+                .findAll { !it.name.endsWith('pom') }
+                .collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    with jar
 }
+
+tasks.build.dependsOn('fatJar')
+buildDir = new File(rootProject.projectDir, "build/")
