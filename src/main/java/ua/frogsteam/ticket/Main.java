@@ -11,14 +11,15 @@ import javax.security.auth.login.LoginException;
 
 import static ua.frogsteam.ticket.Utilities.getDefaultEmbed;
 
-public class TicketBotMain {
+public class Main {
+    
     public static void main(String[] args) {
         CommandClientBuilder ccb = new CommandClientBuilder();
         ccb.useDefaultGame();
         ccb.setOwnerId(Config.OWNER_ID);
         ccb.setPrefix(Config.BOT_PREFIX);
         ccb.useHelpBuilder(true);
-        ccb.addCommands(new ua.frogsteam.ticke.Commands.NewTicketCommand(),
+        ccb.addCommands(new NewTicketCommand(),
                 new CloseTicketCommand(),
                 new AddTicketCommand(),
                 new RemoveTicketCommand());
@@ -26,7 +27,8 @@ public class TicketBotMain {
         ccb.setHelpConsumer(e -> {
             EmbedBuilder helpMessage = getDefaultEmbed("Ticket => Commands", "");
             for (Command c : ccb.build().getCommands())
-                helpMessage.addField("__" + Config.BOT_PREFIX + c.getName() + " " + c.getArguments() + "__", c.getHelp(), false);
+                helpMessage.addField("__" + Config.BOT_PREFIX + c.getName() + " " + c.getArguments() + "__",
+                        c.getHelp(), false);
             e.reply(helpMessage.build());
         });
 
